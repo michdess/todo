@@ -3,14 +3,14 @@
 namespace Tests\Feature;
 
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UpdateTodoTest extends TestCase
 {
     use RefreshDatabase;
-        /** @test */
+
+    /** @test */
     public function a_user_can_update_a_todos_body()
     {
         $this->signIn();
@@ -24,6 +24,7 @@ class UpdateTodoTest extends TestCase
         $this->assertEquals('Some AMAZING task to complete', $todo->fresh()->body);
         $this->assertEquals(Carbon::now()->addDays(2), $todo->fresh()->due);
     }
+
     /** @test */
     public function an_unauthorised_user_cannot_update_a_todo()
     {

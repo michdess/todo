@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GetTodosTest extends TestCase
 {
     use RefreshDatabase;
+
     /** @test */
     public function a_user_can_get_all_todos()
     {
@@ -19,12 +19,13 @@ class GetTodosTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonFragment(['id' => $todo->id]);
     }
+
     /** @test */
     public function an_unauthorised_user_cannot_get_all_todos()
     {
         $this->withExceptionHandling();
         $todo = create('App\Todo');
         $response = $this->get('todos');
-        $response->assertStatus(302);   
+        $response->assertStatus(302);
     }
 }

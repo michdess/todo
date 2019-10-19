@@ -3,13 +3,13 @@
 namespace Tests\Feature;
 
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CompleteTodoTest extends TestCase
 {
     use RefreshDatabase;
+
     /** @test */
     public function a_user_can_mark_a_todo_as_complete()
     {
@@ -22,6 +22,7 @@ class CompleteTodoTest extends TestCase
         $this->assertNotNull($todo->fresh()->completed);
         $this->assertEquals($now, $todo->fresh()->completed);
     }
+
     /** @test */
     public function an_unauthorsed_user_cannot_mark_a_todo_as_complete()
     {
@@ -31,6 +32,7 @@ class CompleteTodoTest extends TestCase
         $response->assertStatus(302);
         $this->assertNull($todo->fresh()->completed);
     }
+
     /** @test */
     public function a_user_can_mark_a_completed_todo_as_incomplete()
     {
@@ -38,11 +40,12 @@ class CompleteTodoTest extends TestCase
         $this->withoutExceptionHandling();
         $todo = create('App\Todo', ['completed' => Carbon::now()]);
         $response = $this->patch('todo/'.$todo->id, [
-            'completed' => null
+            'completed' => null,
         ]);
         $response->assertStatus(200);
         $this->assertNull($todo->fresh()->completed);
     }
+
     /** @test */
     public function an_unauthorised_user_cannot_mark_a_completed_todo_as_incomplete()
     {
@@ -50,7 +53,7 @@ class CompleteTodoTest extends TestCase
         $now = Carbon::now();
         $todo = create('App\Todo', ['completed' => $now]);
         $response = $this->patch('todo/'.$todo->id, [
-            'completed' => null
+            'completed' => null,
         ]);
         $response->assertStatus(302);
         $this->assertNotNull($todo->fresh()->completed);
