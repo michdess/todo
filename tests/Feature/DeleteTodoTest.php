@@ -4,22 +4,22 @@ namespace Tests\Feature;
 
 use App\Todo;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DeleteTodoTest extends TestCase
 {
     use RefreshDatabase;
+
     /** @test */
     public function a_user_can_delete_a_task()
     {
         $this->signIn();
         $this->withoutExceptionHandling();
         $due = Carbon::now();
-        $todo = create('App\Todo',[
+        $todo = create('App\Todo', [
             'body' => 'Some task to complete',
-            'due' => $due,            
+            'due' => $due,
         ]);
         $this->assertCount(1, Todo::all());
         $response = $this->delete('todo/'.$todo->id);
@@ -27,17 +27,18 @@ class DeleteTodoTest extends TestCase
         $this->assertCount(0, Todo::all());
         $this->assertDatabaseMissing('todos', [
             'body' => 'Some task to complete',
-            'due' => $due,            
+            'due' => $due,
         ]);
     }
+
     /** @test */
     public function an_unauthorised_user_cannot_delete_a_task()
     {
         $this->withExceptionHandling();
         $due = Carbon::now();
-        $todo = create('App\Todo',[
+        $todo = create('App\Todo', [
             'body' => 'Some task to complete',
-            'due' => $due,            
+            'due' => $due,
         ]);
         $this->assertCount(1, Todo::all());
         $response = $this->delete('todo/'.$todo->id);
@@ -45,7 +46,7 @@ class DeleteTodoTest extends TestCase
         $this->assertCount(1, Todo::all());
         $this->assertDatabaseHas('todos', [
             'body' => 'Some task to complete',
-            'due' => $due,            
+            'due' => $due,
         ]);
     }
 }

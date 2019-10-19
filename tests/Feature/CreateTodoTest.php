@@ -4,13 +4,13 @@ namespace Tests\Feature;
 
 use App\Todo;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateTodoTest extends TestCase
 {
-   use RefreshDatabase;
+    use RefreshDatabase;
+
     /** @test */
     public function a_user_can_add_a_new_todo()
     {
@@ -24,9 +24,10 @@ class CreateTodoTest extends TestCase
         $this->assertCount(1, Todo::all());
         $this->assertDatabaseHas('todos', [
             'body' => 'Some task to be done',
-            'due' => Carbon::now(),            
+            'due' => Carbon::now(),
         ]);
     }
+
     /** @test */
     public function an_unauthorised_user_cannot_add_a_new_todo()
     {
@@ -39,7 +40,7 @@ class CreateTodoTest extends TestCase
         $this->assertCount(0, Todo::all());
         $this->assertDatabaseMissing('todos', [
             'body' => 'Some task to be done',
-            'due' => Carbon::now(),            
-        ]);        
+            'due' => Carbon::now(),
+        ]);
     }
 }
