@@ -88141,9 +88141,18 @@ function (_React$Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleFilter", function (filter) {
+      _this.setState(function (state) {
+        return {
+          filter: filter
+        };
+      });
+    });
+
     _this.state = {
       tasks: [],
-      newTodo: ''
+      newTodo: '',
+      filter: 'all'
     };
     _this.myRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
     return _this;
@@ -88171,6 +88180,38 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var _this3 = this;
+
+      var filter = this.state.filter;
+      var tasks;
+
+      if (filter == 'all') {
+        tasks = this.state.tasks.map(function (todo) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Task__WEBPACK_IMPORTED_MODULE_5__["Task"], {
+            key: todo.id,
+            task: todo,
+            "delete": _this3.onDelete,
+            complete: _this3.onComplete
+          });
+        });
+      } else if (filter == 'completed') {
+        tasks = this.state.tasks.map(function (todo) {
+          return todo.completed != null ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Task__WEBPACK_IMPORTED_MODULE_5__["Task"], {
+            key: todo.id,
+            task: todo,
+            "delete": _this3.onDelete,
+            complete: _this3.onComplete
+          }) : null;
+        });
+      } else {
+        tasks = this.state.tasks.map(function (todo) {
+          return todo.completed == null ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Task__WEBPACK_IMPORTED_MODULE_5__["Task"], {
+            key: todo.id,
+            task: todo,
+            "delete": _this3.onDelete,
+            complete: _this3.onComplete
+          }) : null;
+        });
+      }
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "w-full md:w-1/2 lg:w-1/3 p-3"
@@ -88206,14 +88247,21 @@ function (_React$Component) {
         onChange: this.handleChange,
         value: this.state.newTodo,
         placeholder: "Add a new todo..."
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Filter:..."), this.state.tasks.map(function (todo) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Task__WEBPACK_IMPORTED_MODULE_5__["Task"], {
-          key: todo.id,
-          task: todo,
-          "delete": _this3.onDelete,
-          complete: _this3.onComplete
-        });
-      })))));
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "flex"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: function onClick() {
+          return _this3.handleFilter('all');
+        }
+      }, "All"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: function onClick() {
+          return _this3.handleFilter('completed');
+        }
+      }, "Complete"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: function onClick() {
+          return _this3.handleFilter('incomplete');
+        }
+      }, "Incomplete")), tasks))));
     }
   }]);
 

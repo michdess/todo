@@ -11,6 +11,7 @@ export class Todos extends React.Component {
         this.state = { 
             tasks: [],
             newTodo: '', 
+            filter: 'all',
         };
         this.myRef = React.createRef();
     }
@@ -37,7 +38,7 @@ export class Todos extends React.Component {
             console.log(result.data);
             this.setState(state => ({
               tasks: state.tasks.concat(result.data),
-              newTodo: ''
+              newTodo: '',
             }));
           })
     }
@@ -58,7 +59,22 @@ export class Todos extends React.Component {
                 }));
           })
     }
+    handleFilter = (filter) => {
+        this.setState(state => ({
+          filter: filter,
+        }));
+    }
     render() {
+        const filter = this.state.filter
+        let tasks;
+
+        if (filter == 'all') {
+          tasks =  this.state.tasks.map(todo => <Task key={todo.id} task={todo} delete={this.onDelete} complete={this.onComplete}/> );
+        } else if (filter == 'completed'){
+          tasks =  this.state.tasks.map(todo => todo.completed != null ? <Task key={todo.id} task={todo} delete={this.onDelete} complete={this.onComplete}/> : null );
+        } else {
+            tasks =  this.state.tasks.map(todo => todo.completed == null ? <Task key={todo.id} task={todo} delete={this.onDelete} complete={this.onComplete}/> : null );
+        }
         return (
             <div className="w-full md:w-1/2 lg:w-1/3 p-3">
                 <div className="bg-white">
@@ -80,8 +96,8 @@ export class Todos extends React.Component {
                                 <form onSubmit={this.handleSubmit}>
                                     <input className="w-full p-3 rounded border border-gray-300" type="text" name="newTodo" onChange={this.handleChange} value={this.state.newTodo} placeholder="Add a new todo..."/>
                                 </form>
-                                <div>Filter:...</div>
-                                {this.state.tasks.map(todo => <Task key={todo.id} task={todo} delete={this.onDelete} complete={this.onComplete}/> )}
+                                <div className="flex"><button onClick={() => this.handleFilter('all')}>All</button><button onClick={() => this.handleFilter('completed')}>Complete</button><button onClick={() => this.handleFilter('incomplete')}>Incomplete</button></div>
+                                {tasks}
                             </div>
                         </div>
                 </div>
