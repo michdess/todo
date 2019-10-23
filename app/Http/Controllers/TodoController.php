@@ -23,7 +23,6 @@ class TodoController extends Controller
     {
         $todo = Todo::find($id);
         $todo->update(request()->all());
-
         return $todo;
     }
 

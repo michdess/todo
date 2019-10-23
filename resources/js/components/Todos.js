@@ -29,15 +29,33 @@ export class Todos extends React.Component {
     handleChange = e => {
         this.setState({ newTodo: e.target.value });
     }
-    handleSubmit(e){
+    handleSubmit = (e) =>{
         e.preventDefault();
-        const todo = {
-          newTodo: this.state.newTodo
-        };
-        axios.post(`/todo`, { todo })
+        axios.post(`/todo`, { body: this.state.newTodo, due: moment().format('YYYY-MM-DD') })
           .then(result => {
             console.log(result);
             console.log(result.data);
+            this.setState(state => ({
+              tasks: state.tasks.concat(result.data),
+              newTodo: ''
+            }));
+          })
+    }
+    onDelete = taskId => {
+        axios.delete(`todo/${taskId}`)
+          .then(result => {
+                this.setState(state => ({
+                  tasks: state.tasks.filter(task => task.id != taskId),
+                }));
+          })
+    }
+    onComplete = (taskId, complete) => {
+        axios.patch(`todo/${taskId}`, { completed: complete != null ? null : moment().format('YYYY-MM-DD') })
+          .then(result => {
+            let tasks = this.state.tasks.map(task => task.id === taskId ? task = result.data : task)
+                this.setState(state => ({
+                  tasks: tasks,
+                }));
           })
     }
     render() {
@@ -58,12 +76,12 @@ export class Todos extends React.Component {
                         </div>
                         <div className="p-3">
                             <div className="-mt-12 p-3 bg-white">
-                            <form onSubmit={this.handleSubmit}>
-                              <input className="w-full p-3 rounded border border-gray-300" type="text" name="newTodo" onChange={this.handleChange} placeholder="test"/>
-                            </form>
-                            <input type='text' ref={this.myRef} />
-                                <input className="w-full p-3 rounded border border-gray-300" placeholder="Add a new todo"/>
-                                {this.state.tasks.map(todo => <Task key={todo.id} task={todo} /> )}
+                                <input type='text' ref={this.myRef} />
+                                <form onSubmit={this.handleSubmit}>
+                                    <input className="w-full p-3 rounded border border-gray-300" type="text" name="newTodo" onChange={this.handleChange} value={this.state.newTodo} placeholder="Add a new todo..."/>
+                                </form>
+                                <div>Filter:...</div>
+                                {this.state.tasks.map(todo => <Task key={todo.id} task={todo} delete={this.onDelete} complete={this.onComplete}/> )}
                             </div>
                         </div>
                 </div>
