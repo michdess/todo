@@ -11,45 +11,78 @@
                 background-image: -webkit-linear-gradient(top left, #FEC163 10%, #DE4313 100%);
                 background-image: -o-linear-gradient(top left, #FEC163 10%, #DE4313 100%);
                 background-image: linear-gradient(to bottom right, #FEC163 10%, #DE4313 100%);
-            }   
+            } 
+            @media (min-width: 1024px){
+                .scroll-bg {
+                    -webkit-animation-name: scrollLarge;
+                    animation-name: scrollLarge;
+                    -webkit-animation-duration: 35s;
+                    animation-duration: 35s;
+                    -webkit-animation-timing-function: linear;
+                    animation-timing-function: linear;
+                    -webkit-animation-iteration-count: infinite;
+                    animation-iteration-count: infinite;
+                }
+            }
+            .scroll-bg {
+                -webkit-animation-name: scrollSmall;
+                animation-name: scrollSmall;
+                -webkit-animation-duration: 30s;
+                animation-duration: 30s;
+                -webkit-animation-timing-function: linear;
+                animation-timing-function: linear;
+                -webkit-animation-iteration-count: infinite;
+                animation-iteration-count: infinite;
+            }
+            @keyframes scrollLarge {
+                0% {
+                    transform: rotate(-13deg) translateY(0);
+                }
+                100% {
+                    transform: rotate(-13deg) translateY(-833px);
+                }
+            } 
+            @keyframes scrollSmall {
+                0% {
+                    transform: rotate(-13deg) translateY(0);
+                }
+                100% {
+                    transform: rotate(-13deg) translateY(-833px);
+                }
+            }           
         </style>
     <!-- Styles -->
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     </head>
-    <body class="h-screen brand-color flex items-center justify-center">
-        <div class="max-w-xs w-full overflow-hidden bg-white shadow-lg -mt-32 z-10">
-            <div class="py-6 px-6">
-              <h2 class="text-left text-lg font-normal mb-2 text-gray-800">Welcome back!</h2>
-              <div class="text-sm">
-                <form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
-                @csrf
-                <input id="email" type="email" class="w-full block rounded border px-4 py-2 mb-4 {{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="Email Address" required autofocus>
-                @if ($errors->has('email'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('email') }}</strong>
-                    </span>
-                @endif
-
-                <input id="password" type="password" class="w-full block rounded border px-4 py-2 mb-4 {{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
-                @if ($errors->has('password'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('password') }}</strong>
-                    </span>
-                @endif        
-                <div class="flex justify-between mb-4">
-                  <label class="text-sm text-gray-600">
-                    <input class="mr-1" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                    Remember me
-                  </label>
-                  <a href="{{ route('password.request') }}" class="ml-1 text-sm no-underline font-normal text-gray-800 hover:underline">Forgot password?</a>
+    <body class="min-h-screen flex items-center justify-center">
+        <div class="h-screen w-screen relative overflow-hidden" style="background:#DE4313;">
+          <div class="hidden lg:block absolute scroll-bg" style="height: 400%; width: 400%; top: -25%; left: -100%; background-size: 800px auto; background-image: url('/img/scroll.png');"></div>
+          <div class="h-screen w-screen relative lg:min-w-3xl xl:min-w-4xl lg:flex lg:items-center lg:justify-center lg:w-3/5 lg:py-16 lg:pl-8 lg:pr-8 bg-no-repeat" style="background-image: url('/img/angled-background.svg'); background-size: 100% auto; background-position: -5px -5px;">
+            <div class="lg:pb-0">
+              <div class="px-6 pt-16 pb-12 md:max-w-3xl md:mx-auto lg:max-w-full lg:pt-0">
+                <p class="flex items-center text-white text-5xl font-semibold">    
+                    <svg class="mr-3 h-12 w-12 fill-current" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="Page-1" stroke="inherit" stroke-width="1" fill="inherit" fill-rule="evenodd">
+                        <g id="icon-shape">
+                            <path d="M2,4 L2,18 L16,18 L16,12 L18,10 L18,20 L17,20 L0,20 L0,19 L0,3 L0,2 L10,2 L8,4 L2,4 Z M12.2928932,3.70710678 L4,12 L4,16 L8,16 L16.2928932,7.70710678 L12.2928932,3.70710678 Z M13.7071068,2.29289322 L16,0 L20,4 L17.7071068,6.29289322 L13.7071068,2.29289322 Z" id="Combined-Shape"></path>
+                        </g>
+                    </g>
+                    </svg>
+                    ToDo
+                </p>
+                <div class="mt-8 lg:mt-16">
+                  <h1 class="mt-2 text-4xl leading-tight xl:text-5xl font-semibold font-display text-white">Remember what you need to do.</h1>
+                  <p class="mt-3 text-lg max-w-xl lg:max-w-3xl text-gray-400 xl:text-2xl">
+                    A simple todo app built with Laravel and React.
+                  </p>
                 </div>
-                <button type="submit" class="bg-orange-500 block text-white font-normal w-full px-4 py-2 rounded">Sign in</button>
-                </form>
+                    <div class="mt-10">
+                     <a href="/login" class="text-center mt-4 relative h-12 sm:mt-0 sm:h-auto block w-full sm:w-1/6 px-6 py-3 font-semibold leading-snug bg-red-900 text-white uppercase tracking-wide rounded-lg shadow-md focus:outline-none focus:shadow-outline hover:bg-red-600"><span class="">Login</span></a>
+                    </div>
+                </div>
               </div>
             </div>
-            <div class="bg-gray-300 text-gray-600 text-sm text-center p-4">
-              No account? <a href="/register" class="no-underline text-gray-800 hover:underline font-normal">Register now!</a>
-            </div>
+          </div>
         </div>
     </body>
 </html>

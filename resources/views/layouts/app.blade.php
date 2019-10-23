@@ -17,10 +17,16 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background-image: linear-gradient( 135deg, #5EFCE8 10%, #736EFE 100%);
+        }
+    </style>
 </head>
-<body>
-    <div id="app">
+<body class="h-screen">
+    <div id="app" class="w-full flex justify-center items-center">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
