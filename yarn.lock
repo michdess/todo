@@ -4244,6 +4244,10 @@ pify@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
 
+pikaday@^1.2.0, pikaday@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/pikaday/-/pikaday-1.8.0.tgz#ce930e257042e852e6aadee1115e01554b2d71c5"
+
 pinkie-promise@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/pinkie-promise/-/pinkie-promise-2.0.1.tgz#2135d6dfa7a358c069ac9b178776288228450ffa"
@@ -4739,6 +4743,12 @@ react-is@^16.8.1:
 react-moment@^0.9.6:
   version "0.9.6"
   resolved "https://registry.yarnpkg.com/react-moment/-/react-moment-0.9.6.tgz#6b359a48205a52196408303e30bc982cd46d0bee"
+
+react-pikaday@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/react-pikaday/-/react-pikaday-0.5.1.tgz#c40d49c23af6c5b9e64330d6d92dd47c564c2d68"
+  dependencies:
+    pikaday "^1.2.0"
 
 react@^16.2.0:
   version "16.10.2"
