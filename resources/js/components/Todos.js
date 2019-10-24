@@ -11,9 +11,11 @@ export class Todos extends React.Component {
         this.state = { 
             tasks: [],
             newTodo: '', 
+            newTodoDue: moment().format('DD-MM-YYYY'),
             filter: 'all',
+            sort: 'created',
         };
-        this.myRef = React.createRef();
+        this.dateRef = React.createRef();
     }
     componentDidMount() {
         axios.get(`/todos`)
@@ -22,7 +24,7 @@ export class Todos extends React.Component {
             this.setState({ tasks });
           });
         new Pikaday({
-          field: this.myRef.current,
+          field: this.dateRef.current,
           format: 'DD/MM/YYYY',
           onSelect: this.onChangeStart
         });          
@@ -30,12 +32,16 @@ export class Todos extends React.Component {
     handleChange = e => {
         this.setState({ newTodo: e.target.value });
     }
+    handleDateChange = e => {
+        this.setState({ newTodoDue: e.target.value });
+    }
+    onChangeStart = e =>{
+        this.setState({ newTodoDue: moment(e).format('YYYY-MM-DD')});
+    }
     handleSubmit = (e) =>{
         e.preventDefault();
-        axios.post(`/todo`, { body: this.state.newTodo, due: moment().format('YYYY-MM-DD') })
+        axios.post(`/todo`, { body: this.state.newTodo, due: moment(this.state.newTodoDue).format('YYYY-MM-DD') })
           .then(result => {
-            console.log(result);
-            console.log(result.data);
             this.setState(state => ({
               tasks: state.tasks.concat(result.data),
               newTodo: '',
@@ -64,9 +70,23 @@ export class Todos extends React.Component {
           filter: filter,
         }));
     }
+    handleSort = (sort) => {
+        this.setState(state => ({
+          sort: sort,
+        }));
+    }
     render() {
         const filter = this.state.filter
+        const sort = this.state.sort
         let tasks;
+
+        if(sort === 'created'){
+          tasks =  this.state.tasks.sort((a,b) => a.id - b.id);
+        } else if(sort === 'first'){
+          tasks =  this.state.tasks.sort((a,b) => moment(a.due) - moment(b.due));
+        } else {
+          tasks =  this.state.tasks.sort((a,b) => moment(b.due) - moment(a.due));      
+        }
 
         if (filter == 'all') {
           tasks =  this.state.tasks.map(todo => <Task key={todo.id} task={todo} delete={this.onDelete} complete={this.onComplete}/> );
@@ -75,6 +95,7 @@ export class Todos extends React.Component {
         } else {
             tasks =  this.state.tasks.map(todo => todo.completed == null ? <Task key={todo.id} task={todo} delete={this.onDelete} complete={this.onComplete}/> : null );
         }
+
         return (
             <div className="w-full md:w-1/2 lg:w-1/3 p-3">
                 <div className="bg-white">
@@ -92,11 +113,20 @@ export class Todos extends React.Component {
                         </div>
                         <div className="p-3">
                             <div className="-mt-12 p-3 bg-white">
-                                <input type='text' ref={this.myRef} />
-                                <form onSubmit={this.handleSubmit}>
-                                    <input className="w-full p-3 rounded border border-gray-300" type="text" name="newTodo" onChange={this.handleChange} value={this.state.newTodo} placeholder="Add a new todo..."/>
+                                <form className="flex" onSubmit={this.handleSubmit}>
+                                    <input className="w-full p-3 rounded-bl rounded-tl border border-gray-300" type="text" name="newTodo" onChange={this.handleChange} value={this.state.newTodo} placeholder="Add a new todo..."/>
+                                    <input className="w-1/4 p-3 border border-gray-300" type='text' name="due" ref={this.dateRef} value={this.state.newTodoDue} onChange={this.handleDateChange} placeholder="Due on:"/>
+                                    <button className="p-3 border rounded-br rounded-tr text-white bg-green-500 text-2xl" type="submit">+</button>
                                 </form>
-                                <div className="flex justify-center my-2"><button className="px-2 uppercase text-gray-500 text-sm" onClick={() => this.handleFilter('all')}>All</button><button className="px-2 uppercase text-gray-500 text-sm" onClick={() => this.handleFilter('completed')}>Complete</button><button className="px-2 uppercase text-gray-500 text-sm" onClick={() => this.handleFilter('incomplete')}>Incomplete</button></div>
+                                <hr className="my-3"/>
+                                <div className="flex items-center">
+                                    <p className="uppercase text-gray-500 text-sm">Filter by:</p>
+                                    <div className="flex justify-center my-2"><button className="px-2 uppercase text-gray-500 text-sm" onClick={() => this.handleFilter('all')}>All</button><button className="px-2 uppercase text-gray-500 text-sm" onClick={() => this.handleFilter('completed')}>Complete</button><button className="px-2 uppercase text-gray-500 text-sm" onClick={() => this.handleFilter('incomplete')}>Incomplete</button></div>
+                                </div>
+                                <div className="flex items-center">
+                                    <p className="uppercase text-gray-500 text-sm">Order by:</p>
+                                    <div className="flex justify-center my-2"><button className="px-2 uppercase text-gray-500 text-sm" onClick={() => this.handleSort('created')}>Created</button><button className="px-2 uppercase text-gray-500 text-sm" onClick={() => this.handleSort('first')}>Due First</button><button className="px-2 uppercase text-gray-500 text-sm" onClick={() => this.handleSort('last')}>Due Last</button></div>
+                                </div>
                                 {tasks}
                             </div>
                         </div>

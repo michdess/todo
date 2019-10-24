@@ -88095,15 +88095,24 @@ function (_React$Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleDateChange", function (e) {
+      _this.setState({
+        newTodoDue: e.target.value
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onChangeStart", function (e) {
+      _this.setState({
+        newTodoDue: moment__WEBPACK_IMPORTED_MODULE_2___default()(e).format('YYYY-MM-DD')
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_this), "handleSubmit", function (e) {
       e.preventDefault();
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("/todo", {
         body: _this.state.newTodo,
-        due: moment__WEBPACK_IMPORTED_MODULE_2___default()().format('YYYY-MM-DD')
+        due: moment__WEBPACK_IMPORTED_MODULE_2___default()(_this.state.newTodoDue).format('YYYY-MM-DD')
       }).then(function (result) {
-        console.log(result);
-        console.log(result.data);
-
         _this.setState(function (state) {
           return {
             tasks: state.tasks.concat(result.data),
@@ -88149,12 +88158,22 @@ function (_React$Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleSort", function (sort) {
+      _this.setState(function (state) {
+        return {
+          sort: sort
+        };
+      });
+    });
+
     _this.state = {
       tasks: [],
       newTodo: '',
-      filter: 'all'
+      newTodoDue: moment__WEBPACK_IMPORTED_MODULE_2___default()().format('DD-MM-YYYY'),
+      filter: 'all',
+      sort: 'created'
     };
-    _this.myRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
+    _this.dateRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
     return _this;
   }
 
@@ -88171,7 +88190,7 @@ function (_React$Component) {
         });
       });
       new pikaday__WEBPACK_IMPORTED_MODULE_4___default.a({
-        field: this.myRef.current,
+        field: this.dateRef.current,
         format: 'DD/MM/YYYY',
         onSelect: this.onChangeStart
       });
@@ -88182,7 +88201,22 @@ function (_React$Component) {
       var _this3 = this;
 
       var filter = this.state.filter;
+      var sort = this.state.sort;
       var tasks;
+
+      if (sort === 'created') {
+        tasks = this.state.tasks.sort(function (a, b) {
+          return a.id - b.id;
+        });
+      } else if (sort === 'first') {
+        tasks = this.state.tasks.sort(function (a, b) {
+          return moment__WEBPACK_IMPORTED_MODULE_2___default()(a.due) - moment__WEBPACK_IMPORTED_MODULE_2___default()(b.due);
+        });
+      } else {
+        tasks = this.state.tasks.sort(function (a, b) {
+          return moment__WEBPACK_IMPORTED_MODULE_2___default()(b.due) - moment__WEBPACK_IMPORTED_MODULE_2___default()(a.due);
+        });
+      }
 
       if (filter == 'all') {
         tasks = this.state.tasks.map(function (todo) {
@@ -88235,19 +88269,34 @@ function (_React$Component) {
         className: "p-3"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "-mt-12 p-3 bg-white"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        type: "text",
-        ref: this.myRef
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "flex",
         onSubmit: this.handleSubmit
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        className: "w-full p-3 rounded border border-gray-300",
+        className: "w-full p-3 rounded-bl rounded-tl border border-gray-300",
         type: "text",
         name: "newTodo",
         onChange: this.handleChange,
         value: this.state.newTodo,
         placeholder: "Add a new todo..."
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "w-1/4 p-3 border border-gray-300",
+        type: "text",
+        name: "due",
+        ref: this.dateRef,
+        value: this.state.newTodoDue,
+        onChange: this.handleDateChange,
+        placeholder: "Due on:"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "p-3 border rounded-br rounded-tr text-white bg-green-500 text-2xl",
+        type: "submit"
+      }, "+")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+        className: "my-3"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "flex items-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        className: "uppercase text-gray-500 text-sm"
+      }, "Filter by:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "flex justify-center my-2"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "px-2 uppercase text-gray-500 text-sm",
@@ -88264,7 +88313,28 @@ function (_React$Component) {
         onClick: function onClick() {
           return _this3.handleFilter('incomplete');
         }
-      }, "Incomplete")), tasks))));
+      }, "Incomplete"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "flex items-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        className: "uppercase text-gray-500 text-sm"
+      }, "Order by:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "flex justify-center my-2"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "px-2 uppercase text-gray-500 text-sm",
+        onClick: function onClick() {
+          return _this3.handleSort('created');
+        }
+      }, "Created"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "px-2 uppercase text-gray-500 text-sm",
+        onClick: function onClick() {
+          return _this3.handleSort('first');
+        }
+      }, "Due First"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "px-2 uppercase text-gray-500 text-sm",
+        onClick: function onClick() {
+          return _this3.handleSort('last');
+        }
+      }, "Due Last"))), tasks))));
     }
   }]);
 

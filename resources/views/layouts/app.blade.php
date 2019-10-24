@@ -37,7 +37,7 @@
             @csrf
         </form>
     </div>
-    <div id="app" class="fixed top-0 bottom-0 right-0 left-0 w-full flex justify-center items-center overflow-scroll">
+    <div id="app" class="fixed top-0 bottom-0 right-0 left-0 w-full flex justify-center overflow-scroll">
         <main class="py-4">
             @yield('content')
         </main>
