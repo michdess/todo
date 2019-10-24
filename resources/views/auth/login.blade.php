@@ -1,6 +1,22 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-@section('content')
+        <title>Todo</title>
+        <!-- Styles -->
+        <style>
+            html, body {
+                background-image: -webkit-linear-gradient(top left, #FEC163 10%, #DE4313 100%);
+                background-image: -o-linear-gradient(top left, #FEC163 10%, #DE4313 100%);
+                background-image: linear-gradient(to bottom right, #FEC163 10%, #DE4313 100%);
+            }       
+        </style>
+    <!-- Styles -->
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    </head>
+    <body class="min-h-screen flex items-center justify-center">
 <div class="max-w-xs w-full overflow-hidden bg-white shadow-lg -mt-32 z-10">
             <div class="py-6 px-6">
               <h2 class="text-left text-lg font-normal mb-2 text-gray-800">Welcome back!</h2>
@@ -35,4 +51,6 @@
               No account? <a href="/register" class="no-underline text-gray-800 hover:underline font-normal">Register now!</a>
             </div>
 </div>
-@endsection
+    </body>
+</html>
+

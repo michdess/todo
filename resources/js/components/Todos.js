@@ -96,7 +96,7 @@ export class Todos extends React.Component {
                                 <form onSubmit={this.handleSubmit}>
                                     <input className="w-full p-3 rounded border border-gray-300" type="text" name="newTodo" onChange={this.handleChange} value={this.state.newTodo} placeholder="Add a new todo..."/>
                                 </form>
-                                <div className="flex"><button onClick={() => this.handleFilter('all')}>All</button><button onClick={() => this.handleFilter('completed')}>Complete</button><button onClick={() => this.handleFilter('incomplete')}>Incomplete</button></div>
+                                <div className="flex justify-center my-2"><button className="px-2 uppercase text-gray-500 text-sm" onClick={() => this.handleFilter('all')}>All</button><button className="px-2 uppercase text-gray-500 text-sm" onClick={() => this.handleFilter('completed')}>Complete</button><button className="px-2 uppercase text-gray-500 text-sm" onClick={() => this.handleFilter('incomplete')}>Incomplete</button></div>
                                 {tasks}
                             </div>
                         </div>

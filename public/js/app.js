@@ -88248,16 +88248,19 @@ function (_React$Component) {
         value: this.state.newTodo,
         placeholder: "Add a new todo..."
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "flex"
+        className: "flex justify-center my-2"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "px-2 uppercase text-gray-500 text-sm",
         onClick: function onClick() {
           return _this3.handleFilter('all');
         }
       }, "All"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "px-2 uppercase text-gray-500 text-sm",
         onClick: function onClick() {
           return _this3.handleFilter('completed');
         }
       }, "Complete"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "px-2 uppercase text-gray-500 text-sm",
         onClick: function onClick() {
           return _this3.handleFilter('incomplete');
         }
