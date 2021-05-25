@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Todo;
-use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
